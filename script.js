@@ -295,31 +295,97 @@ if (!prefersReducedMotion) {
     document.head.appendChild(revealStyle);
 }
 
-// Contact form enhancement (if exists)
-const contactForm = document.querySelector('form');
-if (contactForm) {
-    contactForm.addEventListener('submit', function(e) {
+
+
+// Freelance form handling
+const freelanceForm = document.getElementById('freelanceForm');
+if (freelanceForm) {
+    freelanceForm.addEventListener('submit', function(e) {
         e.preventDefault();
         
+        // Get form data
+        const formData = new FormData(this);
+        const submitBtn = this.querySelector('.submit-btn');
+        const originalText = submitBtn.innerHTML;
+        
         // Add loading state
-        const submitBtn = this.querySelector('button[type="submit"]');
-        const originalText = submitBtn.textContent;
-        submitBtn.textContent = 'Sending...';
+        submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Sending Request...';
         submitBtn.disabled = true;
         
-        // Simulate form submission
+        // Simulate form submission (replace with actual form handling)
         setTimeout(() => {
-            submitBtn.textContent = 'Message Sent!';
-            submitBtn.style.background = 'linear-gradient(135deg, #10b981 0%, #059669 100%)';
+            // Create success message
+            const successMessage = document.createElement('div');
+            successMessage.className = 'form-success';
+            successMessage.innerHTML = `
+                <i class="fas fa-check-circle"></i>
+                <h4>Request sent successfully!</h4>
+                <p>Thank you for your project request. I'll review your requirements and get back to you within 24 hours.</p>
+            `;
             
+            // Insert success message before form
+            this.parentNode.insertBefore(successMessage, this);
+            
+            // Reset form
+            this.reset();
+            
+            // Reset button
+            submitBtn.innerHTML = originalText;
+            submitBtn.disabled = false;
+            
+            // Scroll to success message
+            successMessage.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            
+            // Remove success message after 5 seconds
             setTimeout(() => {
-                submitBtn.textContent = originalText;
-                submitBtn.disabled = false;
-                submitBtn.style.background = '';
-                this.reset();
-            }, 2000);
+                successMessage.remove();
+            }, 5000);
+            
         }, 1500);
     });
+    
+    // Form validation enhancement
+    const requiredFields = freelanceForm.querySelectorAll('[required]');
+    requiredFields.forEach(field => {
+        field.addEventListener('blur', function() {
+            if (this.value.trim() === '') {
+                this.style.borderColor = '#ef4444';
+            } else {
+                this.style.borderColor = '#10b981';
+            }
+        });
+        
+        field.addEventListener('input', function() {
+            if (this.value.trim() !== '') {
+                this.style.borderColor = '#10b981';
+            }
+        });
+    });
+    
+    // Service selection enhancement
+    const serviceSelect = document.getElementById('service');
+    if (serviceSelect) {
+        serviceSelect.addEventListener('change', function() {
+            if (this.value === 'other') {
+                // Create input field for "other" service
+                const otherServiceDiv = document.createElement('div');
+                otherServiceDiv.className = 'form-group';
+                otherServiceDiv.innerHTML = `
+                    <label for="other-service">Please specify the service</label>
+                    <input type="text" id="other-service" name="other-service" required>
+                `;
+                
+                // Insert after service select
+                this.parentNode.insertBefore(otherServiceDiv, this.nextSibling);
+            } else {
+                // Remove "other" input if it exists
+                const otherServiceInput = document.getElementById('other-service');
+                if (otherServiceInput) {
+                    otherServiceInput.parentNode.remove();
+                }
+            }
+        });
+    }
 }
 
 // Preloader (optional)
