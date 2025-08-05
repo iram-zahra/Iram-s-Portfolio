@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Performance Analytics - Iram Zahra</title>
+    <meta name="description" content="Advanced analytics dashboard built with Apps Script to track and visualize student performance metrics and generate insightful reports.">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎨</text></svg>">
+    
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        .project-detail {
+            padding: 120px 0 80px;
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            min-height: 100vh;
+        }
+        
+        .project-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        .project-header {
+            text-align: center;
+            color: white;
+            margin-bottom: 60px;
+        }
+        
+        .project-title {
+            font-size: 3rem;
+            font-weight: 700;
+            margin-bottom: 20px;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+        }
+        
+        .project-subtitle {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            margin-bottom: 30px;
+        }
+        
+        .project-tech-stack {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+        
+        .tech-badge {
+            background: rgba(255,255,255,0.2);
+            padding: 8px 16px;
+            border-radius: 25px;
+            font-size: 0.9rem;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.3);
+        }
+        
+        .project-content {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            margin-bottom: 40px;
+        }
+        
+        .project-section {
+            margin-bottom: 40px;
+        }
+        
+        .section-title {
+            font-size: 1.8rem;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .section-title i {
+            color: #4facfe;
+        }
+        
+        .project-description {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            color: #555;
+            margin-bottom: 30px;
+        }
+        
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .feature-item {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 12px;
+            border-left: 4px solid #4facfe;
+        }
+        
+        .feature-title {
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .feature-description {
+            color: #666;
+            line-height: 1.6;
+        }
+        
+        .screenshots-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .screenshot-item {
+            background: #f8f9fa;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+        
+        .screenshot-placeholder {
+            height: 200px;
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 3rem;
+        }
+        
+        .screenshot-caption {
+            padding: 15px;
+            text-align: center;
+            font-weight: 500;
+            color: #333;
+        }
+        
+        .project-links {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        
+        .project-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 24px;
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            color: white;
+            text-decoration: none;
+            border-radius: 25px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 12px rgba(79, 172, 254, 0.3);
+        }
+        
+        .project-link:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(79, 172, 254, 0.4);
+        }
+        
+        .back-button {
+            position: fixed;
+            top: 30px;
+            left: 30px;
+            background: rgba(255,255,255,0.9);
+            color: #333;
+            padding: 12px 20px;
+            border-radius: 25px;
+            text-decoration: none;
+            font-weight: 500;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.3);
+            transition: all 0.3s ease;
+            z-index: 1000;
+        }
+        
+        .back-button:hover {
+            background: white;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+        
+        @media (max-width: 768px) {
+            .project-title {
+                font-size: 2rem;
+            }
+            
+            .project-content {
+                padding: 20px;
+            }
+            
+            .features-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .screenshots-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .back-button {
+                top: 20px;
+                left: 20px;
+                padding: 10px 16px;
+                font-size: 0.9rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <a href="index.html" class="back-button">
+        <i class="fas fa-arrow-left"></i> Back to Portfolio
+    </a>
+
+    <section class="project-detail">
+        <div class="project-container">
+            <div class="project-header">
+                <h1 class="project-title">Student Performance Analytics</h1>
+                <p class="project-subtitle">Advanced analytics dashboard for educational insights</p>
+                <div class="project-tech-stack">
+                    <span class="tech-badge">Apps Script</span>
+                    <span class="tech-badge">Analytics</span>
+                    <span class="tech-badge">Reporting</span>
+                    <span class="tech-badge">Data Visualization</span>
+                    <span class="tech-badge">Google Sheets</span>
+                </div>
+            </div>
+
+            <div class="project-content">
+                <div class="project-section">
+                    <h2 class="section-title">
+                        <i class="fas fa-info-circle"></i>
+                        Project Overview
+                    </h2>
+                    <p class="project-description">
+                        The Student Performance Analytics dashboard is a sophisticated data analysis tool 
+                        designed to transform raw educational data into actionable insights. This comprehensive 
+                        analytics platform helps educators and administrators make data-driven decisions to 
+                        improve student outcomes and institutional performance.
+                    </p>
+                    <p class="project-description">
+                        Built with Google Apps Script and integrated with Google Sheets, this analytics 
+                        solution provides real-time performance tracking, trend analysis, and predictive 
+                        insights. The dashboard offers customizable reports, interactive visualizations, 
+                        and automated data processing to support evidence-based educational strategies.
+                    </p>
+                </div>
+
+                <div class="project-section">
+                    <h2 class="section-title">
+                        <i class="fas fa-star"></i>
+                        Key Features
+                    </h2>
+                    <div class="features-grid">
+                        <div class="feature-item">
+                            <div class="feature-title">
+                                <i class="fas fa-chart-line"></i>
+                                Real-time Analytics
+                            </div>
+                            <div class="feature-description">
+                                Live performance tracking with instant data updates and real-time 
+                                visualization of student progress, attendance, and achievement metrics.
+                            </div>
+                        </div>
+                        
+                        <div class="feature-item">
+                            <div class="feature-title">
+                                <i class="fas fa-file-alt"></i>
+                                Custom Reporting
+                            </div>
+                            <div class="feature-description">
+                                Flexible report generation with customizable templates, filters, and 
+                                export options for different stakeholders and use cases.
+                            </div>
+                        </div>
+                        
+                        <div class="feature-item">
+                            <div class="feature-title">
+                                <i class="fas fa-lightbulb"></i>
+                                Performance Insights
+                            </div>
+                            <div class="feature-description">
+                                AI-powered analysis providing actionable insights into learning patterns, 
+                                performance trends, and areas for improvement.
+                            </div>
+                        </div>
+                        
+                        <div class="feature-item">
+                            <div class="feature-title">
+                                <i class="fas fa-chart-bar"></i>
+                                Interactive Dashboards
+                            </div>
+                            <div class="feature-description">
+                                Dynamic visualizations with drill-down capabilities, filters, and 
+                                interactive charts for comprehensive data exploration.
+                            </div>
+                        </div>
+                        
+                        <div class="feature-item">
+                            <div class="feature-title">
+                                <i class="fas fa-bell"></i>
+                                Automated Alerts
+                            </div>
+                            <div class="feature-description">
+                                Smart notification system for performance thresholds, attendance issues, 
+                                and important trends requiring attention.
+                            </div>
+                        </div>
+                        
+                        <div class="feature-item">
+                            <div class="feature-title">
+                                <i class="fas fa-users"></i>
+                                Multi-user Access
+                            </div>
+                            <div class="feature-description">
+                                Role-based access control with different permission levels for teachers, 
+                                administrators, and parents to view relevant data.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="project-section">
+                    <h2 class="section-title">
+                        <i class="fas fa-images"></i>
+                        Screenshots
+                    </h2>
+                    <div class="screenshots-grid">
+                        <div class="screenshot-item">
+                            <div class="screenshot-placeholder">
+                                <i class="fas fa-chart-line"></i>
+                            </div>
+                            <div class="screenshot-caption">Analytics Dashboard</div>
+                        </div>
+                        
+                        <div class="screenshot-item">
+                            <div class="screenshot-placeholder">
+                                <i class="fas fa-chart-bar"></i>
+                            </div>
+                            <div class="screenshot-caption">Performance Charts</div>
+                        </div>
+                        
+                        <div class="screenshot-item">
+                            <div class="screenshot-placeholder">
+                                <i class="fas fa-file-alt"></i>
+                            </div>
+                            <div class="screenshot-caption">Report Generator</div>
+                        </div>
+                        
+                        <div class="screenshot-item">
+                            <div class="screenshot-placeholder">
+                                <i class="fas fa-user-graduate"></i>
+                            </div>
+                            <div class="screenshot-caption">Student Profiles</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="project-section">
+                    <h2 class="section-title">
+                        <i class="fas fa-cogs"></i>
+                        Technical Implementation
+                    </h2>
+                    <div class="features-grid">
+                        <div class="feature-item">
+                            <div class="feature-title">
+                                <i class="fab fa-google"></i>
+                                Google Apps Script
+                            </div>
+                            <div class="feature-description">
+                                Backend data processing and analytics engine built with Google Apps Script 
+                                for seamless integration with Google Workspace services.
+                            </div>
+                        </div>
+                        
+                        <div class="feature-item">
+                            <div class="feature-title">
+                                <i class="fas fa-table"></i>
+                                Data Processing
+                            </div>
+                            <div class="feature-description">
+                                Advanced data manipulation and statistical analysis using custom algorithms 
+                                for performance metrics calculation and trend analysis.
+                            </div>
+                        </div>
+                        
+                        <div class="feature-item">
+                            <div class="feature-title">
+                                <i class="fas fa-chart-pie"></i>
+                                Visualization Engine
+                            </div>
+                            <div class="feature-description">
+                                Custom chart generation and data visualization using Google Charts API 
+                                integration for interactive and responsive dashboards.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="project-section">
+                    <h2 class="section-title">
+                        <i class="fas fa-lightbulb"></i>
+                        Analytics Capabilities
+                    </h2>
+                    <div class="features-grid">
+                        <div class="feature-item">
+                            <div class="feature-title">
+                                <i class="fas fa-trending-up"></i>
+                                Trend Analysis
+                            </div>
+                            <div class="feature-description">
+                                Longitudinal performance tracking with trend identification and 
+                                predictive analytics for future performance forecasting.
+                            </div>
+                        </div>
+                        
+                        <div class="feature-item">
+                            <div class="feature-title">
+                                <i class="fas fa-bullseye"></i>
+                                Comparative Analysis
+                            </div>
+                            <div class="feature-description">
+                                Benchmarking capabilities comparing individual student performance 
+                                against class averages and historical data.
+                            </div>
+                        </div>
+                        
+                        <div class="feature-item">
+                            <div class="feature-title">
+                                <i class="fas fa-exclamation-triangle"></i>
+                                Early Warning System
+                            </div>
+                            <div class="feature-description">
+                                Proactive identification of at-risk students through performance 
+                                pattern analysis and automated alert generation.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="project-links">
+                    <a href="#" class="project-link">
+                        <i class="fas fa-external-link-alt"></i>
+                        Live Demo
+                    </a>
+                    <a href="#" class="project-link">
+                        <i class="fab fa-github"></i>
+                        View Code
+                    </a>
+                    <a href="index.html#contact" class="project-link">
+                        <i class="fas fa-envelope"></i>
+                        Request Similar Project
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script src="script.js"></script>
+</body>
+</html> 
